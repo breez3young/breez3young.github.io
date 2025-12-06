@@ -44,9 +44,16 @@ const NEWS = [
 
 const EXPERIENCE = [
   {
+    role: "Top Talent Intern (Foundation Models in Robotic Manipulation)",
+    company: "Institute of Artificial Intelligence (TeleAI)",
+    date: "Dec 2025 - Present",
+    mentor: "Dr. Chenjia Bai",
+    desc: "Co-lead the Rhodes Team. Focusing on pioneering topics on Vision-Language-Action models, covering pre-training (PRTS) to efficient post-training (ATE)."
+  },
+  {
     role: "Research Intern (Foundation Models in Robotic Manipulation)",
     company: "Institute of Artificial Intelligence (TeleAI)",
-    date: "Sep 2024 - Present",
+    date: "Sep 2024 - Nov 2025",
     mentor: "Dr. Chenjia Bai",
     desc: "Co-founded and co-lead the Rhodes Team. Focusing on pioneering topics on Vision-Language-Action models, covering pre-training (PRTS) to efficient post-training (ATE)."
   },
@@ -194,29 +201,29 @@ const SERVICE = [
 
 // Visitor Widget (MapMyVisitors)
 const VisitorWidget = () => {
-  useEffect(() => {
-      // Check if script already exists to prevent duplicate loading
-      if (document.getElementById('mapmyvisitors')) return;
+    useEffect(() => {
+        // Check if script already exists to prevent duplicate loading
+        if (document.getElementById('mapmyvisitors')) return;
 
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.id = 'mapmyvisitors';
-      // Your specific script URL
-      script.src = '//mapmyvisitors.com/map.js?d=402TLUQV8l9TGjp6PKvN7_bT87R4t-aPIWDx6-pueM4&cl=ffffff&w=a';
-      script.async = true; 
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.id = 'mapmyvisitors';
+        // Your specific script URL
+        script.src = '//mapmyvisitors.com/map.js?d=402TLUQV8l9TGjp6PKvN7_bT87R4t-aPIWDx6-pueM4&cl=ffffff&w=a';
+        script.async = true; 
 
-      const container = document.getElementById('map-container');
-      if (container) {
-          container.appendChild(script);
-      }
-  }, []);
+        const container = document.getElementById('map-container');
+        if (container) {
+            container.appendChild(script);
+        }
+    }, []);
 
-  return (
-      // Container for the map
-      <div id="map-container" className="flex justify-center items-center my-4 max-w-[200px] mx-auto min-h-[50px] overflow-hidden">
-          {/* The script will inject the map here */}
-      </div>
-  );
+    return (
+        // Container for the map
+        <div id="map-container" className="flex justify-center items-center my-4 max-w-[200px] mx-auto min-h-[50px] overflow-hidden">
+            {/* The script will inject the map here */}
+        </div>
+    );
 };
 
 // Modified Badge Component to accept className for custom sizing
@@ -386,7 +393,7 @@ export default function App() {
               
               <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-md">
                 <p className="text-red-700 dark:text-red-300 font-medium text-sm sm:text-base">
-                  I am actively seeking visiting student or research intern positions, with a strong aspiration to contribute to industry-leading companies such as <span className="font-bold">Google, Meta, or NVIDIA</span>. I am deeply motivated to engage in cutting-edge research in these environments. Please feel free to reach out.
+                  I am actively seeking visiting student or research intern positions starting in <span className="font-bold">May 2026 or later</span>, with a strong aspiration to contribute to industry-leading companies such as <span className="font-bold">Google, Meta, or NVIDIA</span>. I am deeply motivated to engage in cutting-edge research in these environments. Please feel free to reach out.
                 </p>
               </div>
 
