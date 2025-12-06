@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Github, FileText, Moon, Sun, Award, Briefcase, GraduationCap, BookOpen, Flame, MapPin, Twitter } from 'lucide-react';
+import { Mail, Github, FileText, Moon, Sun, Award, Briefcase, GraduationCap, BookOpen, Flame, MapPin, Twitter, Compass } from 'lucide-react';
 
 // --- DATA SOURCE ---
 
 const PROFILE = {
   name: "Yang Zhang",
-  titleAndDept: "Ph.D. Student, Department of Automation", 
+  titleAndDept: "Ph.D. Student", 
   university: "Tsinghua University",
   emailDisplay: "breezeyoung9470 (at) gmail.com", 
   emailLink: "breezeyoung9470@gmail.com",
@@ -14,6 +14,14 @@ const PROFILE = {
   twitter: "https://x.com/yang_zhang_",
   bio: "I am a Ph.D. student at Tsinghua University. I received my Bachelor's degree in Automation at Tsinghua University in June 2021. Previously, I am currently working closely with Dr. Chenjia Bai as an intern at Shanghai AI Lab and TeleAI. My research aims to develop a general world model that empowers agents with intelligent, generalizable, and interpretable decision-making capabilities.",
 };
+
+const RESEARCH_INTERESTS = [
+  "Embodied AI",
+  "World Models",
+  "Diffusion Models",
+  "Multi-Agent Systems",
+  "Reinforcement Learning"
+];
 
 const EDUCATION = [
   {
@@ -184,76 +192,53 @@ const SERVICE = [
 
 // --- COMPONENTS ---
 
-// Helper for loading external scripts (like ClustrMaps)
-const useScript = (src, id) => {
+// Visitor Widget (MapMyVisitors)
+const VisitorWidget = () => {
   useEffect(() => {
-    // Check if script already exists
-    if (document.getElementById(id)) return;
+      // Check if script already exists to prevent duplicate loading
+      if (document.getElementById('mapmyvisitors')) return;
 
-    const script = document.createElement('script');
-    script.src = src;
-    script.id = id;
-    script.async = true;
-    
-    // The element where we want to append the script might not be available immediately in standard React flow 
-    // for third-party widgets, but usually they look for a specific container ID or append to body.
-    // For ClustrMaps specifically, they often provide a script that writes to the current location.
-    // A safer way in React is to append to a specific div ref.
-  }, [src, id]);
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.id = 'mapmyvisitors';
+      // Your specific script URL
+      script.src = '//mapmyvisitors.com/map.js?d=402TLUQV8l9TGjp6PKvN7_bT87R4t-aPIWDx6-pueM4&cl=ffffff&w=a';
+      script.async = true; 
+
+      const container = document.getElementById('map-container');
+      if (container) {
+          container.appendChild(script);
+      }
+  }, []);
+
+  return (
+      // Container for the map
+      <div id="map-container" className="flex justify-center items-center my-4 max-w-[200px] mx-auto min-h-[50px] overflow-hidden">
+          {/* The script will inject the map here */}
+      </div>
+  );
 };
 
-// Map Widget Component
-const VisitorMap = () => {
-    // INSTRUCTIONS FOR USER:
-    // 1. Go to https://clustrmaps.com/ and sign up (it's free).
-    // 2. Get the "Script" widget code for your GitHub Pages URL.
-    // 3. Replace the 'src' below with your actual ClustrMaps script source.
-    //    It usually looks like: //cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=a&t=n&d=...
-    
-    useEffect(() => {
-        const scriptId = 'clustrmaps-widget';
-        if (document.getElementById(scriptId)) return;
-
-        const script = document.createElement("script");
-        script.id = scriptId;
-        // REPLACE THIS URL WITH YOUR OWN CLUSTRMAPS SCRIPT URL
-        script.src = "//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=a&t=n&d=YOUR_UNIQUE_ID_HERE"; 
-        script.async = true;
-        
-        const container = document.getElementById("map-container");
-        if (container) {
-            container.innerHTML = ''; // Clear previous if any
-            container.appendChild(script);
-        }
-    }, []);
-
-    return (
-        <div 
-            id="map-container" 
-            className="w-full overflow-hidden flex justify-center items-center min-h-[100px] bg-white dark:bg-slate-900 rounded-lg"
-        >
-            {/* Placeholder until you configure it */}
-            <div className="text-xs text-gray-400 text-center p-4 border border-dashed border-gray-300 rounded">
-                Visitor Map Loading... <br/>
-                (Configure script in App.jsx)
-            </div>
-        </div>
-    );
-};
-
-const Badge = ({ children, type = "default" }) => {
+// Modified Badge Component to accept className for custom sizing
+const Badge = ({ children, type = "default", className = "" }) => {
   const styles = {
     default: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
     spotlight: "bg-red-100 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800",
     highlight: "bg-blue-100 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800",
+    // Special style for Research Interest Tags
+    tag: "bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-900/50 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
   };
 
   let selectedStyle = styles.default;
-  if (children.toLowerCase().includes("spotlight")) selectedStyle = styles.spotlight;
-  if (children.toLowerCase().includes("#3")) selectedStyle = styles.highlight;
+  if (type === "tag") selectedStyle = styles.tag;
+  else if (children.toLowerCase().includes("spotlight")) selectedStyle = styles.spotlight;
+  else if (children.toLowerCase().includes("#3")) selectedStyle = styles.highlight;
+  
+  // Default size is text-xs unless overridden in className
+  const defaultSize = className.includes('text-') ? '' : 'text-xs';
 
   return (
-    <span className={`px-2 py-0.5 rounded text-xs font-medium mr-2 ${selectedStyle}`}>
+    <span className={`px-2 py-0.5 rounded font-medium ${type === "tag" ? "px-3 py-1 rounded-full" : "mr-2"} ${selectedStyle} ${defaultSize} ${className}`}>
       {children}
     </span>
   );
@@ -317,7 +302,6 @@ const SectionTitle = ({ icon: Icon, title }) => (
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
 
-  // Check system preference on load
   useEffect(() => {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       setDarkMode(true);
@@ -327,7 +311,6 @@ export default function App() {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-slate-950' : 'bg-gray-50'}`}>
       
-      {/* Mobile Dark Mode Toggle (Fixed) */}
       <button 
         onClick={() => setDarkMode(!darkMode)}
         className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white dark:bg-slate-800 shadow-lg border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform"
@@ -338,13 +321,11 @@ export default function App() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           
-          {/* --- LEFT SIDEBAR (Sticky on Desktop) --- */}
+          {/* --- LEFT SIDEBAR --- */}
           <div className="lg:col-span-4 xl:col-span-3">
             <div className="lg:sticky lg:top-10 space-y-8">
               
-              {/* Profile Card */}
               <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-800 text-center lg:text-left">
-                {/* Avatar Placeholder */}
                 <div className="w-32 h-32 mx-auto lg:mx-0 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900 dark:to-purple-900 mb-6 overflow-hidden flex items-center justify-center border-4 border-white dark:border-slate-800 shadow-md">
                    <img src="profile.jpg" alt="Yang Zhang" className="w-full h-full object-cover" />
                 </div>
@@ -353,21 +334,18 @@ export default function App() {
                   {PROFILE.name}
                 </h1>
                 
-                {/* Unified Font Sizes (text-sm) */}
                 <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
                     <p className="font-medium">
                     {PROFILE.titleAndDept}
                     </p>
-                    <p>
+                    <p className="font-medium">
                     {PROFILE.university}
                     </p>
-                    {/* Obfuscated Email Text */}
                     <p className="font-mono text-gray-500 pt-1">
                     {PROFILE.emailDisplay}
                     </p>
                 </div>
 
-                {/* Social Links Icons (Horizontal) */}
                 <div className="flex justify-center lg:justify-start gap-3 mt-6">
                   <a href={`mailto:${PROFILE.emailLink}`} className="p-2 text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     <Mail className="w-5 h-5" />
@@ -384,7 +362,6 @@ export default function App() {
                 </div>
               </div>
 
-               {/* Education (Sidebar style) - Re-added per request */}
               <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-gray-800">
                 <h3 className="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4">Education</h3>
                 <div className="space-y-4">
@@ -397,12 +374,6 @@ export default function App() {
                   ))}
                 </div>
               </div>
-
-               {/* Pageviews (Real Widget Placeholder) */}
-              <div className="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-800">
-                 <VisitorMap />
-              </div>
-
             </div>
           </div>
 
@@ -413,7 +384,6 @@ export default function App() {
             <section>
               <SectionTitle icon={FileText} title="About Me" />
               
-              {/* Seeking Position Alert (Updated Text) */}
               <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-md">
                 <p className="text-red-700 dark:text-red-300 font-medium text-sm sm:text-base">
                   I am actively seeking visiting student or research intern positions, with a strong aspiration to contribute to industry-leading companies such as <span className="font-bold">Google, Meta, or NVIDIA</span>. I am deeply motivated to engage in cutting-edge research in these environments. Please feel free to reach out.
@@ -425,13 +395,12 @@ export default function App() {
               </div>
             </section>
             
-            {/* Research Interests Tags */}
+            {/* Research Interests (Separate Section with Icon) */}
              <section>
+                <SectionTitle icon={Compass} title="Research Interests" />
                 <div className="flex flex-wrap gap-3">
-                    {['Embodied AI', 'World Models', 'Diffusion Models', 'Multi-Agent Systems', 'Reinforcement Learning'].map((tag) => (
-                        <span key={tag} className="px-3 py-1 rounded-full bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300 text-sm font-medium border border-blue-100 dark:border-blue-900/50">
-                            {tag}
-                        </span>
+                    {RESEARCH_INTERESTS.map((interest, idx) => (
+                        <Badge key={idx} type="tag" className="text-base">{interest}</Badge>
                     ))}
                 </div>
             </section>
@@ -461,7 +430,7 @@ export default function App() {
                     Publications
                  </h2>
                  <span className="text-xs font-medium text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-                    * Equal Contribution, $\dagger$ Project Lead
+                    * Equal Contribution, † Project Lead
                  </span>
               </div>
               
@@ -530,10 +499,16 @@ export default function App() {
 
             </div>
 
-            {/* Footer */}
-            <footer className="pt-10 border-t border-gray-200 dark:border-gray-800 text-center text-sm text-gray-500">
-                <p>&copy; {new Date().getFullYear()} Yang Zhang. Last updated: December 2025.</p>
-                <p className="mt-1">Designed with React & Tailwind CSS.</p>
+            {/* Footer with Visitor Widget */}
+            <footer className="pt-10 mt-10 border-t border-gray-200 dark:border-gray-800 text-center">
+                
+                {/* Specific MapMyVisitors Widget */}
+                <VisitorWidget />
+
+                <div className="text-sm text-gray-500 pb-8">
+                    <p>&copy; {new Date().getFullYear()} Yang Zhang. Last updated: December 2025.</p>
+                    <p className="mt-1">Designed with React & Tailwind CSS.</p>
+                </div>
             </footer>
 
           </div>
