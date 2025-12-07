@@ -12,8 +12,29 @@ const PROFILE = {
   github: "https://github.com/breez3young",
   scholar: "https://scholar.google.com/citations?user=2NxmmZwAAAAJ&hl",
   twitter: "https://x.com/yang_zhang_",
-  bio: "I am a Ph.D. student in Automation at Tsinghua University. I received my Bachelor's degree in Automation at Tsinghua University in June 2021. Currently, I am working closely with Dr. Chenjia Bai as an intern at Embodied AI Center at TeleAI. My research aims to develop a general world model that empowers agents with intelligent, generalizable, and interpretable decision-making capabilities.",
-};
+  bio: (
+    <>
+      I am a Ph.D. student in Automation at Tsinghua University. I received my Bachelor's degree in Automation at Tsinghua University. Throughout my PhD study, I've had the privilege of collaborating closely with{' '}
+      <a 
+        href="https://mig-ai.github.io/person-zhangchongjie.html" 
+        target="_blank" 
+        rel="noreferrer"
+        className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+      >
+        Prof. Chongjie Zhang
+      </a>
+      at Washington University in St.Louis. Currently, I am working closely with{' '}
+      <a 
+        href="https://baichenjia.cn/" 
+        target="_blank" 
+        rel="noreferrer"
+        className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+      >
+        Dr. Chenjia Bai
+      </a>{' '}
+      as an intern in Embodied AI research Center at Institute of Artificial Intelligence (TeleAI), China Telecom. My research aims to develop a general world model that empowers agents with intelligent, generalizable, and interpretable decision-making capabilities.
+    </>
+  ),};
 
 const RESEARCH_INTERESTS = [
   "Robotic Foundation Models",
@@ -81,7 +102,7 @@ const PUBLICATIONS = [
     year: "2025",
     tags: ["Under Review", "#3 Paper on Huggingface Daily"],
     tldr: "We introduce TACO, a training-free test-time scaling framework improving VLA models via Anti-Exploration principles.",
-    links: { paper: null, code: null }
+    links: { paper: "https://arxiv.org/abs/2512.02834", code: "https://github.com/breez3young/TACO", project: "https://vla-anti-exploration.github.io/" }
   },
   {
     title: "Align-Then-stEer: Adapting the Vision-Language Action Models through Unified Latent Guidance",
@@ -90,7 +111,7 @@ const PUBLICATIONS = [
     year: "2025",
     tags: ["Under Review"],
     tldr: "A method using unified latent space and guidance mechanism to efficiently adapt pre-trained VLA models to new robots.",
-    links: { paper: null, code: null }
+    links: { paper: "https://arxiv.org/abs/2509.02055", code: "https://github.com/TeleHuman/Align-Then-Steer", project: "https://align-then-steer.github.io/" }
   },
   {
     title: "Enhancing Dexterous Diffusion Policy with Predictive 3D Representations",
@@ -108,7 +129,7 @@ const PUBLICATIONS = [
     year: "2025",
     tags: ["Conference"],
     tldr: "Introducing DIMA, a sample-efficient Diffusion-Inspired Multi-Agent world model for control environments.",
-    links: { paper: null, code: null }
+    links: { paper: "https://openreview.net/forum?id=rRxFIOoEeF", code: "https://github.com/breez3young/DIMA" }
   },
   {
     title: "Pre-Trained Video Generative Models as World Simulators",
@@ -117,16 +138,16 @@ const PUBLICATIONS = [
     year: "2026",
     tags: ["Conference"],
     tldr: "Dynamic World Simulation (DWS) transforms video generative models into controllable world simulators.",
-    links: { paper: null, code: null }
+    links: { paper: "https://arxiv.org/abs/2502.07825", code: null }
   },
   {
     title: "Online Preference Alignment for Language Models via Count-based Exploration",
     authors: ["Chenjia Bai", "Yang Zhang", "Shuang Qiu", "Qiaosheng Zhang", "Kang Xu", "Xuelong Li"],
     venue: "ICLR 2025",
     year: "2025",
-    tags: ["Spotlight"],
+    tags: ["Conference", "Spotlight"],
     tldr: "Proposed count-based online preference optimization for LLM alignment using coin-flip counting.",
-    links: { paper: null, code: null }
+    links: { paper: "https://openreview.net/forum?id=cfKZ5VrhXt", code: "https://github.com/Baichenjia/COPO" }
   },
   {
     title: "Task-agnostic Pre-training and Task-guided Fine-tuning for Versatile Diffusion Planner",
@@ -135,7 +156,7 @@ const PUBLICATIONS = [
     year: "2025",
     tags: ["Conference"],
     tldr: "A framework for multi-agent collaboration introducing Reinforced Advantage feedback (ReAd).",
-    links: { paper: null, code: null }
+    links: { paper: "https://openreview.net/forum?id=fcJKzwlwcs", code: null }
   },
   {
     title: "Online Iterative Self-Alignment for Radiology Report Generation",
@@ -144,7 +165,7 @@ const PUBLICATIONS = [
     year: "2025",
     tags: ["Conference"],
     tldr: "Online iterative self-alignment method for radiology report generation aligned with multiple objectives.",
-    links: { paper: null, code: null }
+    links: { paper: "https://arxiv.org/abs/2505.11983", code: null }
   },
   {
     title: "Towards Efficient LLM Grounding for Embodied Multi-Agent Collaboration",
@@ -153,7 +174,7 @@ const PUBLICATIONS = [
     year: "2025",
     tags: ["Conference"],
     tldr: "Novel framework for multi-agent collaboration introducing Reinforced Advantage feedback.",
-    links: { paper: null, code: null }
+    links: { paper: "https://arxiv.org/abs/2405.14314", code: null }
   },
   {
     title: "Decentralized Transformers with Centralized Aggregation are Sample-Efficient Multi-Agent World Models",
@@ -162,7 +183,7 @@ const PUBLICATIONS = [
     year: "2025",
     tags: ["Journal"],
     tldr: "First Transformer backbone-based multi-agent world model for sample-efficient policy learning.",
-    links: { paper: null, code: null }
+    links: { paper: "https://openreview.net/forum?id=xT8BEgXmVc", code: "https://github.com/breez3young/MARIE" }
   },
   {
     title: "Contrastive representation for data filtering in cross-domain offline reinforcement learning",
@@ -171,7 +192,7 @@ const PUBLICATIONS = [
     year: "2024",
     tags: ["Conference"],
     tldr: "Measuring dynamics gap based on contrastive representation for cross-domain offline RL.",
-    links: { paper: null, code: null }
+    links: { paper: "https://openreview.net/forum?id=rReWhol66R", code: "https://github.com/BattleWen/IGDF" }
   },
   {
     title: "Multi-agent Exploration with Sub-state Entropy Estimation",
@@ -180,7 +201,7 @@ const PUBLICATIONS = [
     year: "2024",
     tags: ["Conference"],
     tldr: "Plug-and-play intrinsic motivation module for collaborative exploration.",
-    links: { paper: null, code: null }
+    links: { paper: "https://arxiv.org/abs/2306.06382", code: null }
   }
 ];
 
@@ -232,14 +253,21 @@ const Badge = ({ children, type = "default", className = "" }) => {
     default: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
     spotlight: "bg-red-100 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800",
     highlight: "bg-blue-100 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800",
+    conference: "bg-purple-100 text-purple-700 border border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800",
+    // New Green Style for Journals
+    journal: "bg-green-100 text-green-700 border border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800",
     // Special style for Research Interest Tags
     tag: "bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-900/50 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
   };
 
   let selectedStyle = styles.default;
+  const lowerLabel = children.toLowerCase();
+
   if (type === "tag") selectedStyle = styles.tag;
-  else if (children.toLowerCase().includes("spotlight")) selectedStyle = styles.spotlight;
-  else if (children.toLowerCase().includes("#3")) selectedStyle = styles.highlight;
+  else if (lowerLabel.includes("spotlight")) selectedStyle = styles.spotlight;
+  else if (lowerLabel.includes("huggingface daily")) selectedStyle = styles.highlight;
+  else if (lowerLabel.includes("conference")) selectedStyle = styles.conference;
+  else if (lowerLabel.includes("journal")) selectedStyle = styles.journal;
   
   // Default size is text-xs unless overridden in className
   const defaultSize = className.includes('text-') ? '' : 'text-xs';
@@ -283,6 +311,11 @@ const PaperCard = ({ paper }) => {
           {paper.links?.code && (
             <a href={paper.links.code} className="text-xs font-medium px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
               [Code]
+            </a>
+          )}
+          {paper.links?.project && (
+            <a href={paper.links.project} className="text-xs font-medium px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
+              [Project]
             </a>
           )}
         </div>
