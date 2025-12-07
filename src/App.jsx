@@ -22,8 +22,16 @@ const PROFILE = {
         className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
       >
         Prof. Chongjie Zhang
-      </a>
-      at Washington University in St.Louis. Currently, I am working closely with{' '}
+      </a>{' '}
+      at{' '}
+      <a 
+        href="https://washu.edu/" 
+        target="_blank" 
+        rel="noreferrer"
+        className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+      >
+        Washington University in St.Louis
+      </a>. Currently, I am working closely with{' '}
       <a 
         href="https://baichenjia.cn/" 
         target="_blank" 
@@ -32,7 +40,15 @@ const PROFILE = {
       >
         Dr. Chenjia Bai
       </a>{' '}
-      as an intern in Embodied AI research Center at Institute of Artificial Intelligence (TeleAI), China Telecom. My research aims to develop a general world model that empowers agents with intelligent, generalizable, and interpretable decision-making capabilities.
+      as an intern in Embodied AI research Center at{' '}
+      <a 
+        href="https://www.chinatelecomglobal.com/" 
+        target="_blank" 
+        rel="noreferrer"
+        className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+      >
+        Institute of Artificial Intelligence (TeleAI), China Telecom
+      </a>. My research aims to develop a general world model that empowers agents with intelligent, generalizable, and interpretable decision-making capabilities.
     </>
   ),};
 
@@ -60,20 +76,28 @@ const EDUCATION = [
 ];
 
 const NEWS = [
-  { date: "Oct. 2025", content: "Blank" },
+  { date: "Dec. 2025", content: "🔥 Our paper TACO was selected as the #3 Paper of the Day on Huggingface Daily Papers!" },
+  { date: "Sep. 2025", content: "We released Align-Then-stEer (ATE), a unified framework for efficient score-based VLA adaptation." },
+  { date: "May. 2025", content: "🎉 DIMA has been accepted to NeurIPS 2025!" },
+  { date: "May. 2025", content: "🎉 Two papers on Radiology Reports and LLM Grounding for Embodied Multi-Agent Collaboration have been accepted to ACL 2025!" },
+  { date: "May. 2025", content: "🎉 MARIE has been accepted to TMLR!" },
+  { date: "Jan. 2025", content: "🎉 Our work on Online RLHF with Count-based Bonus has been accepted to ICLR 2025 as a Spotlight! I wrote the whole theoretical part of the paper. Feel free to ask me any questions about the algo." },
+  { date: "May. 2024", content: "🎉 One paper accepted to ICML 2024!" },
 ];
 
 const EXPERIENCE = [
   {
     role: "Top Talent Intern (Foundation Models in Robotic Manipulation)",
-    company: "Institute of Artificial Intelligence (TeleAI)",
+    company: "Institute of Artificial Intelligence (TeleAI), China Telecom",
+    // companyUrl: "https://teleai.cn/",
     date: "Dec 2025 - Present",
     mentor: "Dr. Chenjia Bai",
     desc: "Co-lead the Rhodes Team. Focusing on pioneering topics on Vision-Language-Action models, covering pre-training (PRTS) to efficient post-training (ATE)."
   },
   {
     role: "Regular Research Intern (Foundation Models in Robotic Manipulation)",
-    company: "Institute of Artificial Intelligence (TeleAI)",
+    company: "Institute of Artificial Intelligence (TeleAI), China Telecom",
+    // companyUrl: "https://teleai.cn/",
     date: "Sep 2024 - Nov 2025",
     mentor: "Dr. Chenjia Bai",
     desc: "Co-founded and co-lead the Rhodes Team. Focusing on pioneering topics on Vision-Language-Action models, covering pre-training (PRTS) to efficient post-training (ATE)."
@@ -102,7 +126,8 @@ const PUBLICATIONS = [
     year: "2025",
     tags: ["Under Review", "#3 Paper on Huggingface Daily"],
     tldr: "We introduce TACO, a training-free test-time scaling framework improving VLA models via Anti-Exploration principles.",
-    links: { paper: "https://arxiv.org/abs/2512.02834", code: "https://github.com/breez3young/TACO", project: "https://vla-anti-exploration.github.io/" }
+    links: { paper: "https://arxiv.org/abs/2512.02834", code: "https://github.com/breez3young/TACO", project: "https://vla-anti-exploration.github.io/" },
+    // image: "/images/taco.jpg"
   },
   {
     title: "Align-Then-stEer: Adapting the Vision-Language Action Models through Unified Latent Guidance",
@@ -280,9 +305,7 @@ const Badge = ({ children, type = "default", className = "" }) => {
 };
 
 const PaperCard = ({ paper }) => {
-  // --- New Helper to render author name with proper superscript ---
   const renderAuthorName = (authorString) => {
-    // Regex matches text followed by * or † at the end
     const match = authorString.match(/^(.+?)([*†]+)$/);
     if (match) {
         return (
@@ -295,54 +318,72 @@ const PaperCard = ({ paper }) => {
   };
 
   return (
-    <div className="mb-6 group">
-      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-1">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-          {paper.title}
-        </h3>
-        
-        {/* Links: Paper & Code */}
-        <div className="flex gap-2 mt-2 sm:mt-0 shrink-0">
-          {paper.links?.paper && (
-            <a href={paper.links.paper} className="text-xs font-medium px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
-              [Paper]
-            </a>
-          )}
-          {paper.links?.code && (
-            <a href={paper.links.code} className="text-xs font-medium px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
-              [Code]
-            </a>
-          )}
-          {paper.links?.project && (
-            <a href={paper.links.project} className="text-xs font-medium px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
-              [Project]
-            </a>
-          )}
+    // Changed layout to allow image on left
+    <div className="mb-8 group flex flex-col md:flex-row gap-6">
+      
+      {/* Image Section (Conditionally Rendered) */}
+      {paper.image && (
+        <div className="w-full md:w-64 shrink-0 mt-1">
+          <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm group-hover:shadow-md transition-shadow">
+            {/* Removed object-cover and fixed height (md:h-36) to allow auto-resize and maintain aspect ratio */}
+            <img 
+              src={paper.image} 
+              alt={paper.title} 
+              className="w-full h-auto"
+            />
+          </div>
         </div>
-      </div>
-      
-      <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-        {paper.authors.map((author, idx) => (
-          <span key={idx} className={author.includes("Yang Zhang") ? "font-bold text-gray-900 dark:text-white" : ""}>
-            {/* Call the new helper here */}
-            {renderAuthorName(author)}
-            {idx < paper.authors.length - 1 ? ", " : ""}
-          </span>
-        ))}
-      </div>
-      
-      <div className="flex flex-wrap items-center gap-2 mb-2">
-        <span className="text-sm font-medium italic text-gray-800 dark:text-gray-200">
-          {paper.venue}
-        </span>
-        {paper.tags.map((tag, idx) => (
-          <Badge key={idx}>{tag}</Badge>
-        ))}
-      </div>
+      )}
 
-      <div className="text-sm text-gray-500 dark:text-gray-400 pl-3 border-l-2 border-gray-200 dark:border-gray-700">
-        <span className="font-semibold text-xs uppercase tracking-wider text-gray-400 mr-2">TL;DR</span>
-        {paper.tldr}
+      {/* Content Section */}
+      <div className="flex-1">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-1">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            {paper.title}
+          </h3>
+          
+          {/* Links: Paper & Code */}
+          <div className="flex gap-2 mt-2 sm:mt-0 shrink-0">
+            {paper.links?.paper && (
+              <a href={paper.links.paper} className="text-xs font-medium px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
+                [Paper]
+              </a>
+            )}
+            {paper.links?.code && (
+              <a href={paper.links.code} className="text-xs font-medium px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
+                [Code]
+              </a>
+            )}
+            {paper.links?.project && (
+              <a href={paper.links.project} className="text-xs font-medium px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 transition-colors">
+                [Project]
+              </a>
+            )}
+          </div>
+        </div>
+        
+        <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+          {paper.authors.map((author, idx) => (
+            <span key={idx} className={author.includes("Yang Zhang") ? "font-bold text-gray-900 dark:text-white" : ""}>
+              {renderAuthorName(author)}
+              {idx < paper.authors.length - 1 ? ", " : ""}
+            </span>
+          ))}
+        </div>
+        
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <span className="text-sm font-medium italic text-gray-800 dark:text-gray-200">
+            {paper.venue}
+          </span>
+          {paper.tags.map((tag, idx) => (
+            <Badge key={idx}>{tag}</Badge>
+          ))}
+        </div>
+
+        <div className="text-sm text-gray-500 dark:text-gray-400 pl-3 border-l-2 border-gray-200 dark:border-gray-700">
+          <span className="font-semibold text-xs uppercase tracking-wider text-gray-400 mr-2">TL;DR</span>
+          {paper.tldr}
+        </div>
       </div>
     </div>
   );
@@ -510,7 +551,20 @@ export default function App() {
                       <h3 className="text-lg font-bold text-gray-900 dark:text-white">{exp.role}</h3>
                       <span className="text-sm font-medium text-blue-600 dark:text-blue-400 whitespace-nowrap">{exp.date}</span>
                     </div>
-                    <div className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1">{exp.company}</div>
+                    <div className="text-md font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      {exp.companyUrl ? (
+                        <a 
+                          href={exp.companyUrl} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="text-blue-600 dark:text-blue-400 hover:underline"
+                        >
+                          {exp.company}
+                        </a>
+                      ) : (
+                        exp.company
+                      )}
+                    </div>
                     {exp.mentor && <div className="text-sm text-gray-500 mb-2">Mentor: {exp.mentor}</div>}
                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                       {exp.desc}
