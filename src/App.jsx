@@ -40,7 +40,7 @@ const PROFILE = {
       >
         Dr. Chenjia Bai
       </a>{' '}
-      as an intern in Embodied AI research Center at{' '}
+      as a <span className="font-semibold text-gray-900 dark:text-white">Top Talent Intern</span> in Embodied AI research Center at{' '}
       <a 
         href="https://www.chinatelecomglobal.com/" 
         target="_blank" 
