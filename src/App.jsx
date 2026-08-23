@@ -64,6 +64,7 @@ function VisitorWidget() {
 
     const script = document.createElement('script');
     script.type = 'text/javascript';
+    script.id = 'mapmyvisitors';
     script.src = 'https://mapmyvisitors.com/map.js?d=402TLUQV8l9TGjp6PKvN7_bT87R4t-aPIWDx6-pueM4&cl=ffffff&w=a';
     script.async = true;
 
