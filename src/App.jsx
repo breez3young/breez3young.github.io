@@ -4,16 +4,18 @@ import { lastUpdated, profile, publications } from './siteData.js';
 import { ExternalLink, FullPublication, SiteHeader } from './siteComponents.jsx';
 
 const news = [
-  ['2026.09', <>We release <ExternalLink href="https://arxiv.org/abs/2609.37250">V-JEPA Policy</ExternalLink>, a world-action model built on predictive visual latents. <ExternalLink href="https://github.com/breez3young/VJEPA-Policy">Code is available.</ExternalLink></>],
-  ['2026.09', <>Two papers have been accepted to <strong>CoRL 2026</strong>: <ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> and <a href="/publications/#gr-bc">Graph-Reweighted Behavior Cloning</a>. <ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> was selected for a <strong>Spotlight presentation</strong>!</>],
+  ['2026.09', <>We release <ExternalLink href="https://arxiv.org/abs/2609.37250">V-JEPA Policy</ExternalLink>, an effective world-action model directly learned from scratch on predictive visual latents. <ExternalLink href="https://github.com/breez3young/VJEPA-Policy">Code is available.</ExternalLink></>],
+  ['2026.09', <>Two papers have been accepted to <strong>CoRL 2026</strong>: <ExternalLink href="https://rhodes-team-prts.github.io/">
+PRTS: A Primitive Reasoning and Tasking System via Contrastive Representations</ExternalLink> and <a href="/publications/#gr-bc">
+Graph-Reweighted Behavior Cloning with Human Interventions for Precise Robotic Manipulation</a>. <ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> was selected for a <strong>Spotlight presentation</strong>!</>],
   ['2026.08', <><ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> ranked <strong>#4 overall</strong> and <strong>#2 on Composite-Unseen tasks</strong> on the <strong>RoboCasa365</strong> leaderboard as of August 21, with success rates of 39.6% and 18.8%, respectively.</>],
-  ['2026.07', <>Our <ExternalLink href="https://arxiv.org/abs/2607.19876">KineBench</ExternalLink> paper has been accepted to <strong>ECCV 2026</strong>!</>],
+  ['2026.07', <>Our <ExternalLink href="https://arxiv.org/abs/2607.19876">KineBench: Benchmarking Embodied World Models via IDM-Free Kinematic Grounding</ExternalLink> paper has been accepted to <strong>ECCV 2026</strong>!</>],
   ['2026.06', <><ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> ranked <strong>#4</strong> on the <strong>MolmoSpaces All Combined</strong> leaderboard as of June 30.</>],
   ['2026.06', <><ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> ranked <strong>#3</strong> on the <strong>MolmoSpaces Combined</strong> leaderboard as of June 1.</>],
   ['2026.06', <>Our <ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> paper has been accepted to the <strong>SemRob</strong> and <strong>WCBM</strong> workshops at <strong>RSS 2026</strong>!</>],
-  ['2026.01', <>Our <ExternalLink href="https://align-then-steer.github.io/">Align-Then-stEer</ExternalLink> paper has been accepted to <strong>ICLR 2026</strong>!</>],
+  ['2026.01', <>Our <ExternalLink href="https://align-then-steer.github.io/">Align-Then-stEer: Adapting the Vision-Language-Action Models through Unified Latent Guidance</ExternalLink> paper has been accepted to <strong>ICLR 2026</strong>!</>],
   ['2025.12', <><ExternalLink href="https://vla-anti-exploration.github.io/">TACO</ExternalLink> was selected as the #3 Paper of the Day on Hugging Face Daily Papers.</>],
-  ['2025.09', <>Our <ExternalLink href="https://arxiv.org/abs/2505.20922">DIMA</ExternalLink> paper has been accepted to <strong>NeurIPS 2025</strong>!</>],
+  ['2025.09', <>Our <ExternalLink href="https://arxiv.org/abs/2505.20922">Revisiting Multi-Agent World Modeling from a Diffusion-Inspired Perspective</ExternalLink> paper has been accepted to <strong>NeurIPS 2025</strong>!</>],
 ];
 
 const selectedPublicationIds = ['prts', 'vjepa-policy', 'ate', 'kinebench', 'taco', 'dima', 'read', 'marie'];
@@ -157,7 +159,6 @@ export default function App() {
           </aside>
 
           <div className="intro-content">
-            <p className="role">Ph.D. Candidate in Automation at Tsinghua University</p>
             <h2 className="about-title" id="about-title">About me</h2>
             <p className="bio">
               I am a Ph.D. Candidate in Automation at Tsinghua University. During my Ph.D., I have been fortunate to work closely with{' '}
