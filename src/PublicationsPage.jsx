@@ -1,28 +1,30 @@
-import { ExternalLink, FullPublication } from './siteComponents.jsx';
-import { profile, publications } from './siteData.js';
+import { useEffect } from 'react';
+import { ExternalLink, FullPublication, SiteHeader } from './siteComponents.jsx';
+import { lastUpdated, profile, publications } from './siteData.js';
 
-const publicationsByDate = publications
-  .filter(paper => !(
-    /^corl$/i.test(paper.venue)
-    && /under review/i.test(paper.status)
-    && !paper.links.Paper
-  ))
-  .sort((left, right) => {
-    const leftDate = left.preprintDate || `${left.year}-01-01`;
-    const rightDate = right.preprintDate || `${right.year}-01-01`;
-    return rightDate.localeCompare(leftDate);
-  });
+const publicationsByDate = [...publications].sort((left, right) => {
+  const yearOrder = right.year.localeCompare(left.year);
+  if (yearOrder) return yearOrder;
+  const leftDate = left.preprintDate || `${left.year}-01-01`;
+  const rightDate = right.preprintDate || `${right.year}-01-01`;
+  return rightDate.localeCompare(leftDate);
+});
 
 export default function PublicationsPage() {
+  useEffect(() => {
+    // The initial fragment target becomes available after React renders the list.
+    const paperId = window.location.hash.slice(1);
+    if (!paperId) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(paperId)?.scrollIntoView({ block: 'start', behavior: 'instant' });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   return (
     <>
-      <header className="site-header" id="top">
-        <a className="site-name" href="/">Yang Zhang</a>
-        <nav aria-label="Publications navigation">
-          <a href="/#about">About</a>
-          <a href="/publications/">Publications</a>
-        </nav>
-      </header>
+      <a className="skip-link" href="#publications-page-title">Skip to publications</a>
+      <SiteHeader />
 
       <main className="publications-page">
         <section aria-labelledby="publications-page-title">
@@ -31,7 +33,7 @@ export default function PublicationsPage() {
             <ExternalLink href={profile.scholar}>Full list on Google Scholar</ExternalLink>
           </div>
           <p className="publications-page-intro">
-            Peer-reviewed publications and current preprints, ordered from newest to oldest.
+            Published and accepted papers, preprints, and manuscripts, ordered by year.
           </p>
           <p className="publication-legend">* Equal contribution · † Project lead</p>
         </section>
@@ -42,7 +44,7 @@ export default function PublicationsPage() {
       </main>
 
       <footer>
-        <p>Last updated: August 2026</p>
+        <p>Last updated: {lastUpdated}</p>
       </footer>
     </>
   );

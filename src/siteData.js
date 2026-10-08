@@ -6,24 +6,41 @@ export const profile = {
 };
 
 export function publicationVenueLabel(paper) {
+  if (/under review/i.test(paper.status) && !paper.links.Paper) return 'Manuscript';
   return /arxiv|preprint/i.test(`${paper.venue} ${paper.status}`)
     ? 'arXiv preprint'
     : paper.venue;
 }
 
+export const lastUpdated = 'October 2026';
+
 export const publications = [
+  {
+    id: 'vjepa-policy',
+    title: 'V-JEPA Policy: Building Effective World-Action Models on Predictive Visual Latents',
+    authors: 'Yang Zhang, Jiangyuan Zhao, Chenyou Fan, Jiayu Hu, Xiu Yuan, Chenjia Bai, Xiu Li',
+    venue: 'arXiv',
+    year: '2026',
+    preprintDate: '2026-09-29',
+    status: 'Preprint',
+    authorship: 'First author',
+    note: "World-action models can learn to act by predicting visual latents rather than generating future pixels. V-JEPA Policy couples latent prediction with action generation and transfers predictive pretraining without action labels to downstream robot learning.",
+    tags: ["World Models", "Robot Learning", "Representation Learning"],
+    links: { Paper: 'https://arxiv.org/abs/2609.37250', Code: 'https://github.com/breez3young/VJEPA-Policy' },
+  },
   {
     id: 'prts',
     title: 'PRTS: A Primitive Reasoning and Tasking System via Contrastive Representations',
     authors: 'Yang Zhang*†, Jiangyuan Zhao*, Chenyou Fan, Fangzheng Yan, Tian Li, Haitong Tang, Sen Fu, Xuan’er Wu, Qizhen Weng, Weinan Zhang, Xiu Li, Chi Zhang, Chenjia Bai, Xuelong Li',
-    venue: 'SemRob & WCBM Workshops',
+    venue: 'CoRL',
     year: '2026',
     preprintDate: '2026-04-30',
-    status: 'Accepted to SemRob and WCBM',
+    status: 'Spotlight',
     authorship: 'First author · project lead',
     citations: 1,
-    note: 'Reframes policy pre-training as goal-conditioned reinforcement learning and learns temporal goal reachability from reward-free trajectories.',
-    links: { Paper: 'https://arxiv.org/abs/2604.27472', Code: 'https://github.com/TeleHuman/PRTS', Project: 'https://rhodes-team-prts.github.io/' },
+    note: "PRTS reframes VLA pretraining around language-goal reachability, learning from temporal structure as well as action imitation. Goal-conditioned contrastive RL turns offline trajectories into dense supervision for understanding task progress without reward annotations.",
+    tags: ["Vision-Language-Action Models", "Reinforcement Learning", "Representation Learning"],
+    links: { Paper: 'https://arxiv.org/abs/2604.27472', OpenReview: 'https://openreview.net/forum?id=QwpnI3BlwT', Code: 'https://github.com/TeleHuman/PRTS', Project: 'https://rhodes-team-prts.github.io/' },
   },
   {
     id: 'canvas',
@@ -33,7 +50,8 @@ export const publications = [
     year: '2026',
     status: 'Under review',
     authorship: 'Co-author',
-    note: 'A camera-agnostic novel-view synthesis model for robust multi-view manipulation under head- and wrist-camera perturbations.',
+    note: "Wrist-view shifts create a robustness gap that head-view augmentation alone cannot resolve. CANVAS unifies head- and wrist-view synthesis as geometry-guided masked video inpainting, enabling camera augmentation from unpaired robot trajectories.",
+    tags: ["Robot Learning", "Video Generation"],
     links: {},
   },
   {
@@ -42,9 +60,10 @@ export const publications = [
     authors: 'Xiaoman Li, Zhiqiang Yang, Jiayu Hu, Jipeng Kong, Yang Zhang, Waylen Zhang, Fangzheng Yan, Chunhua Shen, Chenjia Bai',
     venue: 'CoRL',
     year: '2026',
-    status: 'Under review',
+    status: 'Accepted',
     authorship: 'Co-author',
-    note: 'Uses a goal-reachability graph to reweight action chunks from mixed-quality intervention data without a reward model or progress labels.',
+    note: "Useful action chunks can occur inside failed rollouts, while successful demonstrations can contain regressions. GR-BC reweights chunks by reductions in graph-estimated steps to completion, extracting task-progress supervision from mixed-quality demonstrations and human interventions for VLA post-training.",
+    tags: ["Vision-Language-Action Models", "Imitation Learning"],
     links: {},
   },
   {
@@ -57,7 +76,8 @@ export const publications = [
     status: 'Accepted',
     authorship: 'Co-first author · project lead',
     citations: 1,
-    note: 'An IDM-free, closed-loop benchmark for evaluating embodied world models through kinematic grounding.',
+    note: "Learned inverse dynamics can confound world-model prediction errors with action-extraction errors. KineBench grounds generated videos in explicit robot kinematics for closed-loop execution, making physical feasibility and the source of failure easier to assess.",
+    tags: ["World Models", "Robot Learning"],
     links: { Paper: 'https://arxiv.org/abs/2607.19876' },
   },
   {
@@ -70,7 +90,8 @@ export const publications = [
     status: 'Under review · #3 Hugging Face Daily Paper',
     authorship: 'Co-first author · project lead',
     citations: 14,
-    note: 'Improves decision-making at test time through training-free anti-exploration over candidate action chunks.',
+    note: "TACO treats unstable VLA sampling as a distribution-support problem. It uses learned pseudo-counts to select action chunks consistent with demonstration data, applying anti-exploration at inference without updating the VLA itself.",
+    tags: ["Vision-Language-Action Models", "Robot Learning"],
     links: { Paper: 'https://arxiv.org/abs/2512.02834', Code: 'https://github.com/breez3young/TACO', Project: 'https://vla-anti-exploration.github.io/' },
   },
   {
@@ -83,7 +104,8 @@ export const publications = [
     status: 'Accepted',
     authorship: 'First author · project lead',
     citations: 19,
-    note: 'A unified latent alignment and guidance framework for efficiently adapting pre-trained VLA models to new robots.',
+    note: "Adapting a VLA to new robots and tasks requires resolving mismatched action distributions. Align-Then-stEer aligns actions in a shared latent space, then uses latent guidance during fine-tuning to steer the pretrained policy toward the target domain.",
+    tags: ["Vision-Language-Action Models", "Transfer Learning"],
     links: { Paper: 'https://arxiv.org/abs/2509.02055', OpenReview: 'https://openreview.net/forum?id=T3i7Ifeatk', Code: 'https://github.com/TeleHuman/Align-Then-Steer', Project: 'https://align-then-steer.github.io/' },
   },
   {
@@ -94,7 +116,8 @@ export const publications = [
     year: '2025',
     status: 'Under review',
     authorship: 'Co-author',
-    note: 'Uses predictive 3D representations to improve long-horizon action generation for dexterous manipulation.',
+    note: "Short observation histories provide limited context for long-horizon dexterous actions. DP3R learns predictive 3D bottlenecks through masked trajectory modeling without action labels, then uses these future-oriented representations to condition diffusion policies trained on action-labeled demonstrations.",
+    tags: ["Robot Learning", "Diffusion Models", "Representation Learning"],
     links: {},
   },
   {
@@ -107,7 +130,8 @@ export const publications = [
     status: 'Accepted',
     authorship: 'First author',
     citations: 15,
-    note: 'DIMA is a sample-efficient, diffusion-inspired multi-agent world model.',
+    note: "The complexity of multi-agent dynamics can be reduced by revealing agents' actions sequentially. DIMA connects this progressive reduction in state uncertainty to reverse diffusion, capturing agent interactions in a world model for policy learning in imagination.",
+    tags: ["World Models", "Multi-Agent Systems", "Reinforcement Learning"],
     links: { Paper: 'https://arxiv.org/abs/2505.20922', Code: 'https://github.com/breez3young/DIMA' },
   },
   {
@@ -119,7 +143,8 @@ export const publications = [
     status: 'Published',
     authorship: 'Second author',
     citations: 48,
-    note: 'Turns pre-trained video generators into controllable simulators and uses their imagined trajectories for downstream reinforcement learning.',
+    note: "DWS adapts pretrained video generators into action-conditioned world simulators. Lightweight action conditioning and a motion-focused objective connect visual prediction with the effects of actions, supporting consistent state changes for interactive prediction and policy learning.",
+    tags: ["World Models", "Video Generation", "Reinforcement Learning"],
     links: { Paper: 'https://arxiv.org/abs/2502.07825', Proceedings: 'https://ojs.aaai.org/index.php/AAAI/article/view/42465' },
   },
   {
@@ -131,7 +156,8 @@ export const publications = [
     status: 'Spotlight',
     authorship: 'Second author',
     citations: 53,
-    note: 'Introduces count-based online preference optimization to improve exploration and data coverage during online alignment.',
+    note: "COPO addresses the limited coverage of preference data through active exploration during online alignment. A count-based bonus encourages the model to discover novel responses while balancing exploration with preference optimization.",
+    tags: ["LLM Alignment", "Preference Learning"],
     links: { Paper: 'https://openreview.net/forum?id=cfKZ5VrhXt', Code: 'https://github.com/Baichenjia/COPO' },
   },
   {
@@ -143,7 +169,8 @@ export const publications = [
     status: 'Published',
     authorship: 'Fifth author',
     citations: 5,
-    note: 'Pre-trains a general diffusion planner on task-agnostic suboptimal trajectories and adapts it with reward-guided fine-tuning.',
+    note: "SODP learns a reusable diffusion planner from diverse, suboptimal trajectories without task-specific rewards during pretraining. Reinforcement learning then adapts the pretrained planner to new downstream tasks using their associated reward signals.",
+    tags: ["Diffusion Models", "Reinforcement Learning"],
     links: { Paper: 'https://proceedings.mlr.press/v267/fan25a.html' },
   },
   {
@@ -155,7 +182,8 @@ export const publications = [
     status: 'Main conference',
     authorship: 'Third author',
     citations: 5,
-    note: 'Iteratively generates preference data and aligns radiology reports with multiple clinical objectives.',
+    note: "OISA addresses limited preference-data coverage in radiology report generation. It iteratively generates candidate reports, evaluates them against multiple reporting objectives, and aligns the model with the resulting preference data to balance these objectives.",
+    tags: ["Preference Learning", "Medical AI"],
     links: { Paper: 'https://aclanthology.org/2025.acl-long.1348/' },
   },
   {
@@ -168,7 +196,8 @@ export const publications = [
     status: 'Published',
     authorship: 'First author · project lead',
     citations: 99,
-    note: 'Introduces Reinforced Advantage feedback to ground language-model planning in efficient embodied multi-agent collaboration.',
+    note: "ReAd grounds LLM collaboration in each agent's contribution to team progress. It learns sequential advantage feedback from planned interactions and uses it to refine joint plans, bringing credit assignment into language-based coordination.",
+    tags: ["Large Language Models", "Multi-Agent Systems"],
     links: { Paper: 'https://aclanthology.org/2025.findings-acl.84/', Project: 'https://read-llm.github.io/' },
   },
   {
@@ -181,7 +210,8 @@ export const publications = [
     status: 'Published',
     authorship: 'First author',
     citations: 21,
-    note: 'A Transformer-based multi-agent world model for sample-efficient policy learning in imagination.',
+    note: "MARIE combines decentralized Transformer dynamics models with centralized aggregation to support learning policies in imagination. Local prediction helps the world model scale, while shared representations capture dependencies among agents for coordinated decision-making.",
+    tags: ["World Models", "Multi-Agent Systems", "Reinforcement Learning"],
     links: { Paper: 'https://arxiv.org/abs/2406.15836', OpenReview: 'https://openreview.net/forum?id=xT8BEgXmVc', Code: 'https://github.com/breez3young/MARIE' },
   },
   {
@@ -193,7 +223,8 @@ export const publications = [
     status: 'Published',
     authorship: 'Fifth author',
     citations: 36,
-    note: 'Uses contrastive representations to measure dynamics gaps and filter data for cross-domain offline reinforcement learning.',
+    note: "IGDF learns contrastive representations to assess which source-domain transitions are useful for a target domain. Filtering source data by this compatibility helps offline reinforcement learning reuse experience despite differences in dynamics.",
+    tags: ["Reinforcement Learning", "Transfer Learning", "Representation Learning"],
     links: { Paper: 'https://openreview.net/forum?id=rReWhol66R', Code: 'https://github.com/BattleWen/IGDF' },
   },
 ];

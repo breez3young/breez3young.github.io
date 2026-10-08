@@ -1,3 +1,5 @@
+import typography from '@tailwindcss/typography';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -9,6 +11,6 @@ export default {
     extend: {},
   },
   plugins: [
-    require('@tailwindcss/typography'), // 可选，如果后面需要排版插件
+    typography, // 可选，如果后面需要排版插件
   ],
 }

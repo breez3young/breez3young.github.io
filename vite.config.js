@@ -9,6 +9,8 @@ const rootDir = fileURLToPath(new URL('.', import.meta.url))
 export default defineConfig({
   plugins: [react()],
   base: '/',
+  server: { host: '127.0.0.1', port: 5173, strictPort: true },
+  preview: { host: '127.0.0.1', port: 5173, strictPort: true },
   build: {
     rollupOptions: {
       input: {

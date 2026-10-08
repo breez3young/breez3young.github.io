@@ -1,29 +1,26 @@
 import { createElement, useEffect, useRef, useState } from 'react';
 import { Github, GraduationCap, Mail, Twitter } from 'lucide-react';
-import { profile, publicationVenueLabel, publications } from './siteData.js';
-import { AuthorList, ExternalLink } from './siteComponents.jsx';
+import { lastUpdated, profile, publications } from './siteData.js';
+import { ExternalLink, FullPublication, SiteHeader } from './siteComponents.jsx';
 
 const news = [
-  ['2026.08', <>PRTS ranked <strong>#4 overall</strong> among 13 evaluated policies on the <strong>RoboCasa365</strong> leaderboard as of August 21.</>],
-  ['2026.07', <>KineBench was accepted to <strong>ECCV 2026</strong>. I served as co-first author and Project Lead.</>],
-  ['2026.06', <>PRTS ranked <strong>#4</strong> on the <strong>MolmoSpaces All Combined</strong> leaderboard as of June 30.</>],
-  ['2026.06', <>PRTS ranked <strong>#3</strong> on the <strong>MolmoSpaces Combined</strong> leaderboard as of June 1.</>],
-  ['2026.06', <>PRTS was accepted to the <strong>SemRob</strong> and <strong>WCBM</strong> workshops at RSS 2026.</>],
-  ['2026.01', <>Align-Then-stEer was accepted to <strong>ICLR 2026</strong>.</>],
-  ['2025.12', <>TACO was selected as the #3 Paper of the Day on Hugging Face Daily Papers.</>],
-  ['2025.05', <>DIMA was accepted to <strong>NeurIPS 2025</strong>.</>],
+  ['2026.09', <>We release <ExternalLink href="https://arxiv.org/abs/2609.37250">V-JEPA Policy</ExternalLink>, a world-action model built on predictive visual latents. <ExternalLink href="https://github.com/breez3young/VJEPA-Policy">Code is available.</ExternalLink></>],
+  ['2026.09', <>Two papers have been accepted to <strong>CoRL 2026</strong>: <ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> and <a href="/publications/#gr-bc">Graph-Reweighted Behavior Cloning</a>. <ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> was selected for a <strong>Spotlight presentation</strong>!</>],
+  ['2026.08', <><ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> ranked <strong>#4 overall</strong> and <strong>#2 on Composite-Unseen tasks</strong> on the <strong>RoboCasa365</strong> leaderboard as of August 21, with success rates of 39.6% and 18.8%, respectively.</>],
+  ['2026.07', <>Our <ExternalLink href="https://arxiv.org/abs/2607.19876">KineBench</ExternalLink> paper has been accepted to <strong>ECCV 2026</strong>!</>],
+  ['2026.06', <><ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> ranked <strong>#4</strong> on the <strong>MolmoSpaces All Combined</strong> leaderboard as of June 30.</>],
+  ['2026.06', <><ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> ranked <strong>#3</strong> on the <strong>MolmoSpaces Combined</strong> leaderboard as of June 1.</>],
+  ['2026.06', <>Our <ExternalLink href="https://rhodes-team-prts.github.io/">PRTS</ExternalLink> paper has been accepted to the <strong>SemRob</strong> and <strong>WCBM</strong> workshops at <strong>RSS 2026</strong>!</>],
+  ['2026.01', <>Our <ExternalLink href="https://align-then-steer.github.io/">Align-Then-stEer</ExternalLink> paper has been accepted to <strong>ICLR 2026</strong>!</>],
+  ['2025.12', <><ExternalLink href="https://vla-anti-exploration.github.io/">TACO</ExternalLink> was selected as the #3 Paper of the Day on Hugging Face Daily Papers.</>],
+  ['2025.09', <>Our <ExternalLink href="https://arxiv.org/abs/2505.20922">DIMA</ExternalLink> paper has been accepted to <strong>NeurIPS 2025</strong>!</>],
 ];
 
-const selectedPublicationIds = ['prts', 'kinebench', 'ate', 'read', 'marie', 'dima', 'taco'];
+const selectedPublicationIds = ['prts', 'vjepa-policy', 'ate', 'kinebench', 'taco', 'dima', 'read', 'marie'];
 const selectedPublications = selectedPublicationIds
   .map(id => publications.find(paper => paper.id === id))
   .filter(Boolean)
-  .filter(paper => /(?:co-)?first author/i.test(paper.authorship))
-  .sort((left, right) => {
-    if (left.id === 'prts' && right.id === 'kinebench') return -1;
-    if (left.id === 'kinebench' && right.id === 'prts') return 1;
-    return right.preprintDate.localeCompare(left.preprintDate);
-  });
+  .filter(paper => /(?:co-)?first author/i.test(paper.authorship));
 
 const experience = [
   ['Sep 2024 - present', 'Top Talent Research Intern', 'TeleAI, China Telecom', 'Co-founded and co-lead the Rhodes Team on general-purpose robotic foundation models, from pre-training to efficient post-training.'],
@@ -31,25 +28,6 @@ const experience = [
   ['Sep 2023 - Sep 2024', 'Research Intern', 'Shanghai AI Laboratory', 'Built multi-agent world models and a principle-based feedback mechanism for grounding language models in embodied collaboration.'],
   ['Feb 2020 - Jul 2020', 'Student Researcher', 'iVision Group, Tsinghua University', 'Developed a closed-loop visual grasping system through the Students Research Training course.'],
 ];
-
-function Publication({ paper }) {
-  return (
-    <article className="publication">
-      <div className="publication-venue">
-        <span>{publicationVenueLabel(paper)}</span>
-        <span>{paper.year}</span>
-      </div>
-      <div className="publication-content">
-        <h3>{paper.title}</h3>
-        <p className="authors"><AuthorList>{paper.authors}</AuthorList></p>
-        <p className="publication-note">{paper.note}</p>
-        <div className="publication-links">
-          {Object.entries(paper.links).map(([label, href]) => <ExternalLink href={href} key={label}>{label}</ExternalLink>)}
-        </div>
-      </div>
-    </article>
-  );
-}
 
 function VisitorWidget() {
   const containerRef = useRef(null);
@@ -107,29 +85,69 @@ function ProfileLink({ href, icon, children, external = true }) {
   );
 }
 
-function SectionHeader({ title }) {
+function SectionHeader({ title, children }) {
   return (
     <div className="section-header">
       <h2>{title}</h2>
+      {children}
     </div>
   );
 }
 
-export default function App() {
+function HomeHero() {
   return (
     <>
-      <header className="site-header" id="top">
-        <a className="site-name" href="/">Yang Zhang</a>
-        <nav aria-label="Primary navigation">
-          <a href="/#about">About</a>
-          <a href="/publications/">Publications</a>
-        </nav>
-      </header>
+      <a className="skip-link" href="#about">Skip to about</a>
+      <SiteHeader home />
+      <section className="home-hero" id="top" aria-labelledby="hero-title">
+        <figure className="hero-figure">
+          <div className="hero-stage">
+            <picture className="hero-artwork">
+              <source
+                type="image/webp"
+                srcSet="/images/school-of-embodiment-960.webp 960w, /images/school-of-embodiment.webp 1774w"
+                sizes="100vw"
+              />
+              <img
+                src="/images/school-of-embodiment.png"
+                width="1774"
+                height="887"
+                alt="The School of Embodiment: robed robots gather in a Renaissance hall; a group on the right carefully studies how to grasp an orange."
+                fetchPriority="high"
+              />
+            </picture>
+
+
+
+            <div className="hero-copy">
+              <h1 id="hero-title">Yang Zhang</h1>
+              <p>World models · Robot learning · <span>Physical intelligence</span></p>
+            </div>
+          </div>
+        </figure>
+      </section>
+    </>
+  );
+}
+
+export default function App() {
+  useEffect(() => {
+    const sectionId = window.location.hash.slice(1);
+    if (!sectionId) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(sectionId)?.scrollIntoView({ block: 'start', behavior: 'instant' });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  return (
+    <>
+      <HomeHero />
 
       <main>
-        <section className="intro" id="about">
+        <section className="intro" id="about" aria-labelledby="about-title">
           <aside className="profile-column">
-            <img src="/profile.jpg" alt="Yang Zhang" />
+            <img src="/profile.jpg" alt="Yang Zhang" loading="lazy" width="210" height="245" />
             <div className="profile-links" aria-label="Profile links">
               <ProfileLink href={`mailto:${profile.email}`} icon={Mail} external={false}>{profile.email}</ProfileLink>
               <ProfileLink href={profile.scholar} icon={GraduationCap}>Google Scholar</ProfileLink>
@@ -139,10 +157,10 @@ export default function App() {
           </aside>
 
           <div className="intro-content">
-            <p className="role">Ph.D. student in Automation at Tsinghua University</p>
-            <h1>Yang Zhang</h1>
+            <p className="role">Ph.D. Candidate in Automation at Tsinghua University</p>
+            <h2 className="about-title" id="about-title">About me</h2>
             <p className="bio">
-              I am a Ph.D. student in Automation at Tsinghua University. During my Ph.D., I have been fortunate to work closely with{' '}
+              I am a Ph.D. Candidate in Automation at Tsinghua University. During my Ph.D., I have been fortunate to work closely with{' '}
               <a href="https://baichenjia.cn/">Dr. Chenjia Bai</a> at{' '}
               <a href="https://www.teleai.com.cn/">TeleAI, China Telecom</a>, and with{' '}
               <a href="https://engineering.washu.edu/faculty/Chongjie-Zhang.html">Prof. Chongjie Zhang</a> at Washington University in St. Louis. At TeleAI, I co-founded and now co-lead the{' '}
@@ -177,12 +195,14 @@ export default function App() {
         </section>
 
         <section className="page-section" id="publications">
-          <SectionHeader title="Selected publications" />
+          <SectionHeader title="Featured publications">
+            <a href="/publications/">Full publication list →</a>
+          </SectionHeader>
           <p className="publication-legend">
             * Equal contribution · † Project lead
           </p>
           <div className="publication-list">
-            {selectedPublications.map(paper => <Publication paper={paper} key={paper.title} />)}
+            {selectedPublications.map(paper => <FullPublication paper={paper} key={paper.id} />)}
           </div>
         </section>
 
@@ -204,7 +224,7 @@ export default function App() {
       </main>
 
       <footer>
-        <p>Last updated: August 2026</p>
+        <p>Last updated: {lastUpdated}</p>
         <VisitorWidget />
       </footer>
     </>
