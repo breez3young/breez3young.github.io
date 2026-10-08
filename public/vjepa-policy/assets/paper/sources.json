@@ -1,0 +1,27 @@
+[
+  {
+    "figure": "fig1_method.svg",
+    "original": "originals/V-JEPA-Policy-zy-v1.pdf",
+    "sha256": "03324991e4a2b100b3075edd69bde20fbe01f1a248518f5809e01a0518e4a914"
+  },
+  {
+    "figure": "fig2_transfer.svg",
+    "original": "originals/q3_transfer_combined.pdf",
+    "sha256": "87741c97a43ae2162346ba609e12b8785186cf87bbec3d7ef8d2cd2aec7182e4"
+  },
+  {
+    "figure": "fig3_platform.svg",
+    "original": "originals/Tianji.pdf",
+    "sha256": "a144dba06b565ffa1d3da807dd4177f9f2415571836007fedb4e02b3b802760b"
+  },
+  {
+    "figure": "fig4_real_world_tasks.svg",
+    "original": "originals/real-world-tasks.pdf",
+    "sha256": "7e051246944c8a8ce06291a75c8547b4f1e4c5b891cfdfa17a65b84fde1b922e"
+  },
+  {
+    "figure": "fig5_pareto.svg",
+    "original": "originals/pareto_frontiers.pdf",
+    "sha256": "60e7ed7213d63fb03a006ef15af93cbbfe00c3d53c86f1dc7d0ea2b98d853e2f"
+  }
+]

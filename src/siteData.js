@@ -39,7 +39,7 @@ export const publications = [
     authorship: 'First author',
     note: "V-JEPA Policy builds world-action models on a frozen predictive visual encoder without inheriting a pretrained visual generator. It jointly learns future-latent prediction and action generation, transferring future-modeling knowledge from predictor pretraining on robot videos without action labels to downstream control.",
     tags: ["World-Action Models", "JEPA", "Predictive Representation Learning"],
-    links: { Paper: 'https://arxiv.org/abs/2609.37250', Code: 'https://github.com/breez3young/VJEPA-Policy' },
+    links: { Paper: 'https://arxiv.org/abs/2609.37250', Code: 'https://github.com/breez3young/VJEPA-Policy', Project: '/vjepa-policy/' },
   },
   {
     id: 'prts',

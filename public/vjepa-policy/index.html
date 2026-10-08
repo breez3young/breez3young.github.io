@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="V-JEPA Policy builds a compact world-action model on frozen V-JEPA 2.1 latents. Explore the method, predictor pretraining, benchmark results, and open-source training recipes.">
+  <title>V-JEPA Policy: Building Effective World-Action Models on Predictive Visual Latents</title>
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48 64x64">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/icon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/icon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="#top">V-JEPA Policy</a>
+    <nav aria-label="Primary navigation">
+      <a href="#findings">Findings</a>
+      <a href="#method">Method</a>
+      <a href="#benchmarks">Results</a>
+      <a href="#libero-plus">Demos</a>
+      <a href="#reproduce">Reproduce</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero section-wrap">
+      <div class="hero-copy">
+        <h1>V-JEPA Policy</h1>
+        <p class="project-title">Building Effective World-Action Models on Predictive Visual Latents</p>
+        <p class="authors"><span><a href="https://breez3young.github.io/" target="_blank" rel="noopener">Yang Zhang</a><sup>1</sup></span>, <span>Jiangyuan Zhao<sup>2</sup></span>, <span>Chenyou Fan<sup>3</sup></span>, <span>Jiayu Hu<sup>4</sup></span>, <span><a href="https://xiuyuan0216.github.io/" target="_blank" rel="noopener">Xiu Yuan</a><sup>5</sup></span>, <span><a href="https://baichenjia.cn/" target="_blank" rel="noopener">Chenjia Bai</a><sup>6,7</sup></span>, <span>Xiu Li<sup>1</sup></span></p>
+        <ul class="institution-logos" aria-label="Author affiliations">
+          <li class="institution-logo" title="Tsinghua University"><sup>1</sup><img src="assets/logos/tsinghua-seal.svg" alt="Tsinghua University" width="64" height="64"></li>
+          <li class="institution-logo" title="Shanghai Jiao Tong University"><sup>2</sup><img src="assets/logos/sjtu.png" alt="Shanghai Jiao Tong University" width="64" height="64"></li>
+          <li class="institution-logo" title="Fudan University"><sup>3</sup><img src="assets/logos/fudan.svg" alt="Fudan University" width="64" height="64"></li>
+          <li class="institution-logo" title="University of Science and Technology of China"><sup>4</sup><img src="assets/logos/ustc.svg" alt="University of Science and Technology of China" width="64" height="64"></li>
+          <li class="institution-logo" title="Washington University in St. Louis"><sup>5</sup><img src="assets/logos/washu.jpg" alt="Washington University in St. Louis" width="64" height="64"></li>
+          <li class="institution-logo" title="TeleAI, Institute of Artificial Intelligence, China Telecom"><sup>6</sup><img src="assets/logos/teleai.png" alt="TeleAI, Institute of Artificial Intelligence, China Telecom" width="64" height="64"></li>
+          <li class="institution-logo institution-logo-gamma" title="Gamma Robotics"><sup>7</sup><img src="assets/logos/gamma_robotics.png" alt="Gamma Robotics" width="1358" height="506"></li>
+        </ul>
+        <div class="hero-actions">
+          <a class="hero-button hero-button-primary" href="https://arxiv.org/abs/2609.37250" target="_blank" rel="noopener"><svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z"/><path d="M14 3v6h6M8 13h8M8 17h6"/></svg><span>Paper (arXiv)</span></a>
+          <a class="hero-button" href="https://github.com/breez3young/VJEPA-Policy" target="_blank" rel="noopener"><svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-16-2 20"/></svg><span>Code</span></a>
+          <a class="hero-button" href="#libero-plus"><svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 8 6 4-6 4Z"/></svg><span>Demos</span></a>
+          <a class="hero-button" href="#latent"><svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Latents</span></a>
+          <a class="hero-button" href="#paper"><svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M10 7H4v6h5c0 3-2 5-5 5M20 7h-6v6h5c0 3-2 5-5 5"/></svg><span>BibTeX</span></a>
+        </div>
+        <p class="dek">We study whether a world-action model can be built on a frozen predictive visual encoder without inheriting a complete pretrained visual generator. V-JEPA Policy learns a future predictor and action expert on that latent space, which also supports transferring future-modeling knowledge from DROID videos and instructions to robot control.</p>
+      </div>
+      <div class="hero-stats" aria-label="From Scratch policy highlights">
+        <div><strong>0.9B</strong><span>policy parameters*</span></div>
+        <div><strong>0.6B</strong><span>trainable parameters</span></div>
+        <div><strong>97.25%</strong><span>LIBERO<small>From Scratch</small></span></div>
+        <div><strong>79.25%</strong><span>LIBERO-Plus<small>From Scratch</small></span></div>
+        <div><strong>50.92%</strong><span>RoboCasa-GR1<small>From Scratch</small></span></div>
+      </div>
+      <p class="parameter-note">*Visual encoder + future predictor + action expert. The frozen T5 text encoder is used to precompute instruction embeddings and is excluded from this policy parameter count.</p>
+      <figure class="paper-figure hero-figure">
+        <a class="figure-source" href="assets/paper/originals/V-JEPA-Policy-zy-v1.pdf" target="_blank" rel="noopener" aria-label="Open original PDF: V-JEPA Policy method overview from Figure 1 of the paper"><img src="assets/paper/fig1_method.svg" width="2280" height="794" alt="V-JEPA Policy method overview from Figure 1 of the paper"></a>
+        <figcaption>Figure 1. A frozen V-JEPA 2.1 encoder defines the latent space. A future predictor and flow-matching action expert share layer-wise context states.</figcaption>
+      </figure>
+    </section>
+
+    <section id="findings" class="section-wrap findings-section" aria-labelledby="findings-title">
+      <h2 id="findings-title">Key findings</h2>
+      <p class="findings-intro">We study what a WAM needs to inherit, how its visual foundation affects robustness, and whether the same V-JEPA latent space supports acquiring and transferring future-modeling knowledge.</p>
+      <div class="findings-list">
+        <article class="finding" aria-labelledby="finding-1-title">
+          <h3 id="finding-1-title">Finding 1. A frozen predictive visual encoder is a sufficient foundation for WAM learning.</h3>
+          <div class="finding-body">
+            <p>The future predictor and action expert are learned jointly from downstream demonstrations on frozen V-JEPA 2.1 latents. Without inheriting a complete pretrained visual generator, the 0.9B From Scratch policy reaches <strong>97.25% on LIBERO</strong> and <strong>50.92% on RoboCasa-GR1</strong>.</p>
+            <a href="#benchmarks">Benchmark results (Table 5)</a>
+          </div>
+        </article>
+        <article class="finding" aria-labelledby="finding-2-title">
+          <h3 id="finding-2-title">Finding 2. Predictive latents provide the strongest robustness under a shared downstream recipe.</h3>
+          <div class="finding-body">
+            <p>With the policy backbones, demonstrations, and training budget held fixed, V-JEPA 2.1 ViT-L leads the tested encoders on LIBERO-Plus. Its advantage over DINOv2 widens from <strong>2.35 points on LIBERO to 12.23 points under distribution shifts</strong>.</p>
+            <a href="#visual-foundations">Visual foundations and encoder scale (Table 4)</a>
+          </div>
+        </article>
+        <article class="finding" aria-labelledby="finding-3-title">
+          <h3 id="finding-3-title">Finding 3. V-JEPA latent space supports acquiring and transferring future-modeling knowledge.</h3>
+          <div class="finding-body">
+            <p>The same frozen V-JEPA 2.1 encoder defines the latent inputs and future-prediction targets in DROID pretraining and downstream policy learning. A predictor pretrained without action labels transfers its future-modeling knowledge through its weights to joint training with a new action expert, raising LIBERO-Plus success from <strong>79.25% to 91.50%</strong> at the same downstream budget.</p>
+            <a href="#transfer">Learning and transfer in V-JEPA latent space (Figure 2)</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="method" class="band band-light">
+      <div class="section-wrap">
+        <div class="section-heading">
+          <h2>Learning a WAM on a frozen visual foundation.</h2>
+          <p>The From Scratch design tests the sufficiency of predictive visual latents directly. The pretrained visual encoder stays frozen, while robot demonstrations jointly train a new future predictor and action expert. Their layer-wise context key–value states connect future modeling to action generation; language and proprioception condition both modules.</p>
+        </div>
+        <div class="method-grid">
+          <article>
+            <h3>Freeze a predictive space</h3>
+            <p>V-JEPA 2.1 ViT-L encodes each camera view into spatiotemporal tokens. The encoder is shared across pretraining and policy learning and never receives downstream gradients.</p>
+          </article>
+          <article>
+            <h3>Forecast future latents</h3>
+            <p>Instruction-conditioned future queries predict the next latent tubelets in one forward pass. Context states become future-informed through bidirectional interaction.</p>
+          </article>
+          <article>
+            <h3>Generate an action chunk</h3>
+            <p>A flow-matching action expert attends to the predictor's layer-wise context key-values and produces a 32-step action chunk without rendering imagined pixels.</p>
+          </article>
+        </div>
+        <div class="contract-row">
+          <div><span>Frozen</span><strong>V-JEPA 2.1 ViT-L</strong><small>visual latent substrate</small></div>
+          <div><span>Trainable</span><strong>Future predictor</strong><small>latent prediction and context</small></div>
+          <div><span>Trainable</span><strong>Action expert</strong><small>flow-matching control</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="benchmarks" class="band band-paper">
+      <div class="section-wrap">
+        <div class="section-heading">
+          <h2>Results across three benchmarks.</h2>
+          <p>From Scratch jointly learns the future predictor and action expert on downstream demonstrations. Pretrained Predictor adds predictor-only pretraining on DROID before the same downstream training, with a newly initialized action expert. The visual and text encoders remain frozen in both variants.</p>
+        </div>
+        <div class="results-overview">
+          <div class="table-scroll" role="region" aria-label="Benchmark results" tabindex="0">
+            <table class="compact-table summary-table">
+              <caption>Success rate (%) from Table 5</caption>
+              <thead><tr><th scope="col">Benchmark</th><th scope="col">From Scratch</th><th scope="col">Pretrained Predictor</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">LIBERO</th><td>97.25</td><td>98.70</td></tr>
+                <tr><th scope="row">LIBERO-Plus</th><td>79.25</td><td>91.50</td></tr>
+                <tr><th scope="row">RoboCasa-GR1</th><td>50.92</td><td>55.58</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="source-note">Matched downstream data, protocols, and training budgets; predictor pretraining adds an upstream stage. LIBERO-Plus uses the LIBERO-trained policies without further fine-tuning.</p>
+          <div class="protocol-grid">
+            <div><strong>LIBERO</strong><span>40 tasks × 50 episodes</span><a href="https://github.com/breez3young/VJEPA-Policy/blob/release/examples/libero/README.md">Evaluation guide ↗</a></div>
+            <div><strong>LIBERO-Plus</strong><span>10,030 perturbed tasks across 7 axes</span><a href="https://github.com/breez3young/VJEPA-Policy/blob/release/examples/libero_plus/README.md">Evaluation guide ↗</a></div>
+            <div><strong>RoboCasa-GR1</strong><span>24 tasks × 50 episodes</span><a href="https://github.com/breez3young/VJEPA-Policy/blob/release/examples/gr1/README.md">Evaluation guide ↗</a></div>
+          </div>
+        </div>
+        <div id="visual-foundations" class="evidence-grid">
+          <article class="evidence-card">
+            <h3>Visual foundation comparison</h3>
+            <p>Compare discriminative, reconstructive, video-understanding, and predictive representations under one downstream recipe. V-JEPA 2.1 ViT-L achieves the strongest LIBERO-Plus result among the tested encoders, with a larger margin under distribution shifts.</p>
+            <table class="compact-table">
+              <thead><tr><th>Frozen encoder</th><th>LIBERO</th><th>LIBERO-Plus</th></tr></thead>
+              <tbody>
+                <tr><th>DINOv2 ViT-L/14</th><td>94.90</td><td>67.02</td></tr>
+                <tr><th>DINOv3 ViT-L/16</th><td>93.35</td><td>64.28</td></tr>
+                <tr><th>WAN2.2 VAE</th><td>92.60</td><td>46.43</td></tr>
+                <tr><th>InternVideo3</th><td>93.10</td><td>68.62</td></tr>
+                <tr class="accent-row"><th>V-JEPA 2.1 ViT-L</th><td>97.25</td><td>79.25</td></tr>
+              </tbody>
+            </table>
+            <span class="source-note">Table 4 in the paper</span>
+          </article>
+          <article class="evidence-card">
+            <h3>Representation quality and encoder scale</h3>
+            <p>Upgrading V-JEPA 2 to 2.1 improves robustness at both encoder sizes, while increasing capacity gives mixed returns. V-JEPA 2.1 ViT-L achieves the strongest LIBERO-Plus result, outperforming its ViT-G counterpart under the same downstream recipe.</p>
+            <table class="compact-table">
+              <thead><tr><th>Predictive encoder</th><th>Encoder size</th><th>LIBERO-Plus</th></tr></thead>
+              <tbody>
+                <tr><th>V-JEPA 2 ViT-L</th><td>304M</td><td>74.15</td></tr>
+                <tr class="accent-row"><th>V-JEPA 2.1 ViT-L</th><td>304M</td><td>79.25</td></tr>
+                <tr><th>V-JEPA 2 ViT-G</th><td>1.01B</td><td>76.08</td></tr>
+                <tr><th>V-JEPA 2.1 ViT-G</th><td>1.01B</td><td>78.37</td></tr>
+              </tbody>
+            </table>
+            <span class="source-note">Table 4 in the paper. Size counts the frozen visual encoder only.</span>
+          </article>
+        </div>
+        <figure class="paper-figure pareto-figure">
+          <a class="figure-source" href="assets/paper/originals/pareto_frontiers.pdf" target="_blank" rel="noopener" aria-label="Open original PDF: Success rate versus policy parameters from Figure 5 of the paper"><img src="assets/paper/fig5_pareto.svg" width="998" height="499" alt="Success rate versus policy parameters from Figure 5 of the paper" loading="lazy"></a>
+          <figcaption>Figure 5. The from-scratch V-JEPA Policy lies on the empirical parameter-performance Pareto frontier in all five evaluated settings.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="transfer" class="section-wrap evidence-section">
+      <div class="section-heading split-heading">
+        <div>
+          <h2>Learning and transfer in V-JEPA latent space.</h2>
+        </div>
+        <p>A shared V-JEPA 2.1 encoder maps current observations and future frames into the same frozen latent space in both stages. On DROID videos, instructions and observed state condition a predictor trained to forecast future latents, without action labels or an action expert. Its learned weights then initialize the downstream predictor, which supplies future-informed context to a newly initialized action expert during joint policy learning. The latent space thus supports both direct WAM learning and the acquisition and transfer of broader future-modeling knowledge.</p>
+      </div>
+      <figure class="paper-figure wide-figure">
+        <a class="figure-source" href="assets/paper/originals/q3_transfer_combined.pdf" target="_blank" rel="noopener" aria-label="Open original PDF: DROID predictor pretraining results from Figure 2 of the paper"><img src="assets/paper/fig2_transfer.svg" width="468" height="281" alt="DROID predictor pretraining results from Figure 2 of the paper" loading="lazy"></a>
+        <figcaption>Figure 2. Left: predictor transfer at the default downstream budget compared with an extended From Scratch run. Right: improvements across all seven LIBERO-Plus perturbation axes at the same default downstream budget.</figcaption>
+      </figure>
+      <div class="metric-grid">
+        <div><strong>79.25%</strong><span>From Scratch</span><small>21,360 downstream updates</small></div>
+        <div><strong>81.64%</strong><span>From Scratch, extended</span><small>60,000 downstream updates</small></div>
+        <div><strong>91.50%</strong><span>Pretrained Predictor</span><small>21,360 downstream updates</small></div>
+      </div>
+      <p class="source-note">LIBERO-Plus success rates from Table 5 and Figure 2. The extended scratch run keeps the model, dataset, and batch size fixed. Predictor pretraining adds an upstream stage, so these results do not compare equal total training compute.</p>
+    </section>
+
+    <section id="libero-plus" class="section-wrap axis-section">
+      <div class="section-heading split-heading">
+        <div>
+          <h2>In-domain control and generalization.</h2>
+        </div>
+        <p>A LIBERO-Spatial in-domain rollout is shown alongside seven LIBERO-Plus generalization cases. LIBERO-Plus evaluates LIBERO-trained policies under distribution shifts without further fine-tuning. These clips are qualitative examples; aggregate results appear above.</p>
+      </div>
+      <div class="axis-grid" aria-label="In-domain LIBERO and LIBERO-Plus generalization cases">
+        <article class="axis-card case-in-domain">
+          <p class="case-type"><span>In-domain</span><span>LIBERO</span></p>
+          <div class="axis-title"><h3>LIBERO-Spatial</h3></div>
+          <video class="axis-video" controls muted playsinline preload="metadata" poster="assets/posters/libero-spatial.jpg" aria-label="LIBERO-Spatial in-domain rollout"><source src="assets/libero_spatial_rollout.mp4" type="video/mp4"></video>
+          <details class="case-instruction"><summary>Task instruction</summary><p>Pick up the black bowl between the plate and the ramekin and place it on the plate.</p></details>
+        </article>
+        <article class="axis-card">
+          <p class="case-type"><span>Generalization</span><span>LIBERO-Plus</span></p>
+          <div class="axis-title"><h3>Language instructions</h3><strong>+29.73 pp</strong></div>
+          <video class="axis-video" controls muted playsinline preload="metadata" poster="assets/demos/libero-plus/posters/language-instructions.jpg"><source src="assets/demos/libero-plus/language-instructions.mp4" type="video/mp4"></video>
+          <details class="case-instruction"><summary>Task instruction</summary><p>Grasp the darkhued rounded container situated between the flat dish used for serving food and the small glazed ceramic dish and set it down onto the flat dish used for serving food.</p></details>
+        </article>
+        <article class="axis-card">
+          <p class="case-type"><span>Generalization</span><span>LIBERO-Plus</span></p>
+          <div class="axis-title"><h3>Background textures</h3><strong>+15.80 pp</strong></div>
+          <video class="axis-video" controls muted playsinline preload="metadata" poster="assets/demos/libero-plus/posters/background-textures.jpg"><source src="assets/demos/libero-plus/background-textures.mp4" type="video/mp4"></video>
+          <details class="case-instruction"><summary>Task instruction</summary><p>Pick up the black bowl between the plate and the ramekin and place it on the plate. Background textures are perturbed.</p></details>
+        </article>
+        <article class="axis-card">
+          <p class="case-type"><span>Generalization</span><span>LIBERO-Plus</span></p>
+          <div class="axis-title"><h3>Robot initial states</h3><strong>+12.32 pp</strong></div>
+          <video class="axis-video" controls muted playsinline preload="metadata" poster="assets/demos/libero-plus/posters/robot-initial-states.jpg"><source src="assets/demos/libero-plus/robot-initial-states.mp4" type="video/mp4"></video>
+          <details class="case-instruction"><summary>Task instruction</summary><p>Pick up the black bowl between the plate and the ramekin and place it on the plate. The robot starts from a perturbed initial state.</p></details>
+        </article>
+        <article class="axis-card">
+          <p class="case-type"><span>Generalization</span><span>LIBERO-Plus</span></p>
+          <div class="axis-title"><h3>Camera viewpoints</h3><strong>+9.51 pp</strong></div>
+          <video class="axis-video" controls muted playsinline preload="metadata" poster="assets/demos/libero-plus/posters/camera-viewpoints.jpg"><source src="assets/demos/libero-plus/camera-viewpoints.mp4" type="video/mp4"></video>
+          <details class="case-instruction"><summary>Task instruction</summary><p>Pick up the black bowl between the plate and the ramekin and place it on the plate. Camera viewpoint is perturbed.</p></details>
+        </article>
+        <article class="axis-card">
+          <p class="case-type"><span>Generalization</span><span>LIBERO-Plus</span></p>
+          <div class="axis-title"><h3>Object layout</h3><strong>+8.85 pp</strong></div>
+          <video class="axis-video" controls muted playsinline preload="metadata" poster="assets/demos/libero-plus/posters/objects-layout.jpg"><source src="assets/demos/libero-plus/objects-layout.mp4" type="video/mp4"></video>
+          <details class="case-instruction"><summary>Task instruction</summary><p>Pick up the black bowl between the plate and the ramekin and place it on the plate. Object layout is perturbed.</p></details>
+        </article>
+        <article class="axis-card">
+          <p class="case-type"><span>Generalization</span><span>LIBERO-Plus</span></p>
+          <div class="axis-title"><h3>Sensor noise</h3><strong>+7.56 pp</strong></div>
+          <video class="axis-video" controls muted playsinline preload="metadata" poster="assets/demos/libero-plus/posters/sensor-noise.jpg"><source src="assets/demos/libero-plus/sensor-noise.mp4" type="video/mp4"></video>
+          <details class="case-instruction"><summary>Task instruction</summary><p>Pick up the black bowl between the plate and the ramekin and place it on the plate. Sensor noise is applied to observations.</p></details>
+        </article>
+        <article class="axis-card">
+          <p class="case-type"><span>Generalization</span><span>LIBERO-Plus</span></p>
+          <div class="axis-title"><h3>Lighting conditions</h3><strong>+0.17 pp</strong></div>
+          <video class="axis-video" controls muted playsinline preload="metadata" poster="assets/demos/libero-plus/posters/light-conditions.jpg"><source src="assets/demos/libero-plus/light-conditions.mp4" type="video/mp4"></video>
+          <details class="case-instruction"><summary>Task instruction</summary><p>Pick up the black bowl between the plate and the ramekin and place it on the plate. Lighting conditions are perturbed.</p></details>
+        </article>
+      </div>
+      <p class="source-note">LIBERO-Plus gains are aggregate improvements from predictor pretraining, reported in percentage points in Figure 2. They are not scores calculated from the individual clips shown here.</p>
+    </section>
+
+    <section id="latent" class="band band-light latent-section">
+      <div class="section-wrap">
+        <div class="section-heading">
+          <h2>Visualizing future latents.</h2>
+          <p>Read each row from left to right: an observed context latent followed by four predicted temporal latents. Rows separate the main and wrist cameras. Colors show a shared PCA projection of normalized latent tokens on the 14×14 patch grid; they are not decoded RGB frames.</p>
+        </div>
+        <figure class="latent-figure">
+          <div class="latent-scroll" role="region" aria-label="Future latent sequence by camera; scroll horizontally on small screens" tabindex="0">
+            <table class="latent-table" aria-describedby="latent-caption">
+              <colgroup><col class="latent-camera-column"><col span="5"></colgroup>
+              <thead>
+                <tr class="latent-groups"><th scope="col" rowspan="2">Camera view</th><th scope="colgroup">Observed</th><th scope="colgroup" colspan="4">Predicted future <span aria-hidden="true">→</span></th></tr>
+                <tr class="latent-steps"><th scope="col">Context</th><th scope="col">Future 1</th><th scope="col">Future 2</th><th scope="col">Future 3</th><th scope="col">Future 4</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Main camera</th>
+                  <td class="latent-context"><img src="assets/latent/main-context.png" width="224" height="224" loading="lazy" alt="Main-camera context latent, PCA color projection"></td>
+                  <td><img src="assets/latent/main-future-1.png" width="224" height="224" loading="lazy" alt="Main-camera predicted temporal latent 1"></td>
+                  <td><img src="assets/latent/main-future-2.png" width="224" height="224" loading="lazy" alt="Main-camera predicted temporal latent 2"></td>
+                  <td><img src="assets/latent/main-future-3.png" width="224" height="224" loading="lazy" alt="Main-camera predicted temporal latent 3"></td>
+                  <td><img src="assets/latent/main-future-4.png" width="224" height="224" loading="lazy" alt="Main-camera predicted temporal latent 4"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Wrist camera</th>
+                  <td class="latent-context"><img src="assets/latent/wrist-context.png" width="224" height="224" loading="lazy" alt="Wrist-camera context latent, PCA color projection"></td>
+                  <td><img src="assets/latent/wrist-future-1.png" width="224" height="224" loading="lazy" alt="Wrist-camera predicted temporal latent 1"></td>
+                  <td><img src="assets/latent/wrist-future-2.png" width="224" height="224" loading="lazy" alt="Wrist-camera predicted temporal latent 2"></td>
+                  <td><img src="assets/latent/wrist-future-3.png" width="224" height="224" loading="lazy" alt="Wrist-camera predicted temporal latent 3"></td>
+                  <td><img src="assets/latent/wrist-future-4.png" width="224" height="224" loading="lazy" alt="Wrist-camera predicted temporal latent 4"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="latent-scroll-hint">Scroll horizontally to follow the full prediction sequence.</p>
+          <figcaption id="latent-caption">V-JEPA 2.1 ViT-L on a successful OSMesa LIBERO rollout. Main and wrist views use the same independent-view policy layout, per-token normalization, PCA basis, component orientation, and color scale. The basis is fitted once over both cameras, the observed context, and four predicted future steps. LIBERO-Plus results are shown above across all seven perturbation axes; this paired latent panel provides the corresponding camera-level view of future prediction.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="real-world" class="section-wrap real-world-section">
+      <div class="section-heading split-heading">
+        <div>
+          <h2>Transfer to bimanual manipulation.</h2>
+        </div>
+        <p>On the TianJi Marvin dual-arm platform, the Pretrained Predictor improves two long-horizon bimanual tasks. Table 3 reports 20 trials per task: Table Cleanup improves from 11/20 to 15/20, and Saucer Racking from 7/20 to 17/20.</p>
+      </div>
+      <div class="real-world-grid">
+        <figure class="paper-figure">
+          <a class="figure-source" href="assets/paper/originals/Tianji.pdf" target="_blank" rel="noopener" aria-label="Open original PDF: TianJi Marvin dual-arm platform from Figure 3 of the paper"><img src="assets/paper/fig3_platform.svg" width="783" height="647" alt="TianJi Marvin dual-arm platform from Figure 3 of the paper" loading="lazy"></a>
+          <figcaption>Figure 3. Four RGB streams, two 7-DoF arms, and parallel-jaw grippers.</figcaption>
+        </figure>
+        <figure class="paper-figure">
+          <a class="figure-source" href="assets/paper/originals/real-world-tasks.pdf" target="_blank" rel="noopener" aria-label="Open original PDF: Real-world bimanual task workflows from Figure 4 of the paper"><img src="assets/paper/fig4_real_world_tasks.svg" width="1660" height="432" alt="Real-world bimanual task workflows from Figure 4 of the paper" loading="lazy"></a>
+          <figcaption>Figure 4. Table Cleanup and Saucer Handover and Racking.</figcaption>
+        </figure>
+      </div>
+      <div class="result-strip">
+        <span><strong>55% → 75%</strong> Table Cleanup</span>
+        <span><strong>35% → 85%</strong> Saucer Racking</span>
+        <span><strong>178.17 ms</strong> action core mean latency</span>
+        <span><strong>4.66 GiB</strong> peak allocated VRAM</span>
+      </div>
+      <p class="source-note">Latency and memory: Table 6 / Appendix F, action-prediction core on an RTX 4090, batch size 1, three camera views. These measurements exclude sensor I/O and motor execution; 4.66 GiB is peak PyTorch allocated memory.</p>
+    </section>
+
+    <section id="reproduce" class="band band-ink">
+      <div class="section-wrap reproduce-layout">
+        <div>
+          <h2>Train and evaluate.</h2>
+          <p>Start with the LIBERO tutorial, then use the benchmark guides for LIBERO-Plus and RoboCasa-GR1. The repository includes predictor pretraining, downstream joint training, evaluation examples, and agent skills. Prepare the visual encoder weights, data, and text caches before launching a training recipe.</p>
+          <div class="button-row">
+            <a class="button button-light" href="https://github.com/breez3young/VJEPA-Policy"><span>Open the repository</span><svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
+            <a class="text-link light-link" href="https://github.com/breez3young/VJEPA-Policy/blob/release/docs/setup.md"><span>Setup guide</span><svg class="button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
+          </div>
+        </div>
+        <pre><code>git clone --branch release \
+  https://github.com/breez3young/VJEPA-Policy.git
+cd VJEPA-Policy
+conda create -n vjepa-policy python=3.10 pip -y
+conda activate vjepa-policy
+# Install PyTorch for your CUDA driver (see Setup).
+python -m pip install -e .
+# Follow the training guide to prepare data and weights.</code></pre>
+      </div>
+      <div class="section-wrap code-notes">
+        <div><strong>Training recipes</strong><p>From Scratch and Pretrained Predictor, with LIBERO as the tutorial example.</p><a class="text-link light-link" href="https://github.com/breez3young/VJEPA-Policy/blob/release/docs/training.md">Training guide ↗</a></div>
+        <div><strong>Evaluation examples</strong><p>Benchmark setup, episode counts, and result validation live alongside each example.</p><a class="text-link light-link" href="#benchmarks">Choose a benchmark ↑</a></div>
+        <div><strong>Checkpoint release plan</strong><p>LIBERO and RoboCasa-GR1 policies, plus the DROID-pretrained predictor, are planned releases. Researchers can train with the current recipes.</p><a class="text-link light-link" href="https://github.com/breez3young/VJEPA-Policy#checkpoint-release-plan">Release status ↗</a></div>
+      </div>
+    </section>
+
+    <section id="paper" class="section-wrap paper-section">
+      <h2>BibTeX</h2>
+      <p class="citation-intro">If you find V-JEPA Policy useful for your research, please consider citing:</p>
+      <a class="text-link" href="assets/vjepa-policy.bib" download>Download BibTeX</a>
+      <pre class="citation-block"><code>@article{zhang2026vjepa-policy,
+  title={V-JEPA Policy: Building Effective World-Action Models on Predictive Visual Latents},
+  author={Zhang, Yang and Zhao, Jiangyuan and Fan, Chenyou and Hu, Jiayu and Yuan, Xiu and Bai, Chenjia and Li, Xiu},
+  journal={arXiv preprint arXiv:2609.37250},
+  year={2026}
+}</code></pre>
+    </section>
+  </main>
+
+  <footer class="footer section-wrap"><span>V-JEPA Policy</span><a href="https://arxiv.org/abs/2609.37250">arXiv:2609.37250</a></footer>
+</body>
+</html>

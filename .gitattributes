@@ -1,0 +1,4 @@
+*.pdf binary
+
+# Preserve imported institution artwork without reformatting generated SVGs.
+public/vjepa-policy/assets/logos/*.svg -whitespace

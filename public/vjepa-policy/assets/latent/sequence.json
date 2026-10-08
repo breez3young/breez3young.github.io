@@ -1,0 +1,27 @@
+{
+  "status": "paired",
+  "source": "OSMesa LIBERO latent export",
+  "suite": "libero_spatial",
+  "task": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+  "backend": "osmesa",
+  "success": true,
+  "views": [
+    "agentview",
+    "wrist"
+  ],
+  "query_index": 0,
+  "layout": "context plus four predicted temporal latent steps; 2 independent camera views",
+  "projection": {
+    "normalization": "per-token layer normalization (same representation used for the latent prediction target)",
+    "pca_basis": "one shared basis fitted over context and all four future steps for both camera views",
+    "rgb_mapping": "components 1-3 mapped to R/G/B",
+    "color_scale": "one shared 1st-99th percentile scale per component",
+    "component_signs": [
+      1,
+      -1,
+      -1
+    ],
+    "interpolation": "nearest neighbor; discrete 14\u00d714 token cells"
+  },
+  "note": "These are latent feature projections, not decoded RGB images."
+}
